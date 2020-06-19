@@ -30,15 +30,13 @@
                     v-if="imageGarbage"
                     :src="imageGarbage"
                     alt="your image"
+                    height="298"
                   />
                   <template v-if="imageGarbage">
                     <a class="file-remove" href="#" @click="removeImageGarbage"
                       >&#215;</a
                     >
                   </template>
-                  <canvas id="myCanvas" style="border: 1px solid #d3d3d3;">
-                    <img id="output" hidden />
-                  </canvas>
                   <div class="ipl-input-hint">
                     <p>
                       Maksimal ukuran file 1 Mb, hanya menerima file .jpeg, .jpg
@@ -209,41 +207,6 @@ export default {
         img.onerror = (err) => reject(err)
       })
     },
-    cropImage(img) {
-      const width = img.shape[0]
-      const height = img.shape[1]
-
-      // use the shorter side as the size to which we will crop
-      const shorterSide = Math.min(img.shape[0], img.shape[1])
-
-      // calculate beginning and ending crop points
-      const startingHeight = (height - shorterSide) / 2
-      const startingWidth = (width - shorterSide) / 2
-      const endingHeight = startingHeight + shorterSide
-      const endingWidth = startingWidth + shorterSide
-
-      // return image data cropped to those points
-      return img.slice(
-        [startingWidth, startingHeight, 0],
-        [endingWidth, endingHeight, 3]
-      )
-    },
-    resizeImage(image) {
-      return tf.image.resizeBilinear(image, [256, 256])
-    },
-    batchImage(image) {
-      // Expand our tensor to have an additional dimension, whose size is 1
-      const batchedImage = image.expandDims(0)
-
-      // Turn pixel data into a float between -1 and 1.
-      return batchedImage.toFloat().div(tf.scalar(127)).sub(tf.scalar(1))
-    },
-    loadAndProcessImage(image) {
-      const croppedImage = this.cropImage(image)
-      const resizedImage = this.resizeImage(croppedImage)
-      const batchedImage = this.batchImage(resizedImage)
-      return batchedImage
-    },
     async lanjutan() {
       await this.loadModel().then(async (pretrainedModel) => {
         await this.loadImage(this.imageGarbage).then((tensor) => {
@@ -264,25 +227,6 @@ export default {
           //   this.garbageClassification = top6.className
         })
       })
-    },
-    getImageFromCanvas(e) {
-      const output = document.getElementById('output')
-      output.src = URL.createObjectURL(e.target.files[0])
-      output.onload = () => {
-        URL.revokeObjectURL(output.src)
-        const c = document.getElementById('myCanvas')
-        const ctx = c.getContext('2d')
-        ctx.drawImage(output, 0, 0, 256, 256)
-        const imgData = ctx.getImageData(0, 0, 256, 256).data
-        const input = []
-        for (let i = 0; i < imgData.length; i++) {
-          if (i % 4 !== 3) {
-            input.push(imgData[i] / 255)
-          }
-        }
-        this.setState({ imgData: input })
-        this.predictImage()
-      }
     },
   },
 }

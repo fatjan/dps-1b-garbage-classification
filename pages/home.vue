@@ -26,12 +26,13 @@
                       />
                     </div>
                   </div>
-                  <img
+                  <!-- <img
                     v-if="imageGarbage"
                     :src="imageGarbage"
                     alt="your image"
-                    height="400"
-                  />
+                    hidden
+                  /> -->
+                  <img :src="imageGarbage" height="250" />
                   <template v-if="imageGarbage">
                     <a class="file-remove" href="#" @click="removeImageGarbage"
                       >&#215;</a
@@ -117,10 +118,10 @@ export default {
       modelReady: false,
       targetClasses: [
         'carboard',
-        'bottle',
         'glass',
-        'plastic',
         'metal',
+        'paper',
+        'plastic',
         'trash',
       ],
     }
@@ -130,13 +131,13 @@ export default {
   },
   methods: {
     onFileChangeGarbage(e) {
-      //   this.getImageFromCanvas(e)
+      this.garbageClassification = '.......'
       const files = e.target.files || e.dataTransfer.files
-      if (files[0].size > 5000000) {
-        this.notifFileTooBig()
-        document.getElementById('file').value = ''
-        return
-      }
+      //   if (files[0].size > 5000000) {
+      //     this.notifFileTooBig()
+      //     document.getElementById('file').value = ''
+      //     return
+      //   }
       if (!files.length) return
       this.createImageGarbage(files[0])
     },
@@ -177,9 +178,11 @@ export default {
     },
     async lanjutan() {
       await this.loadImage(this.imageGarbage).then(async (tensor) => {
-        console.log('ini tensor yg ud diproses ', tensor)
         const classes = await this.model.predict(tensor).data()
-        console.log('ini classes ', classes)
+        const maxPoint = Math.max(...classes)
+        const index = classes.indexOf(maxPoint)
+        const predictedClass = this.targetClasses[index]
+        this.garbageClassification = predictedClass + '.'
       })
     },
   },

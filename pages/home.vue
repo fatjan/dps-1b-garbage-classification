@@ -30,7 +30,7 @@
                     v-if="imageGarbage"
                     :src="imageGarbage"
                     alt="your image"
-                    height="298"
+                    height="500"
                   />
                   <template v-if="imageGarbage">
                     <a class="file-remove" href="#" @click="removeImageGarbage"
@@ -94,23 +94,13 @@
 </style>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
 import * as tf from '@tensorflow/tfjs'
-// import { loadFrozenModel } from '@tensorflow/tfjs-converter'
-// import * as tfnode from '@tensorflow/tfjs-node'
-// import cardboard from '@/assets/image/cb.jpg'
-// import modelLoaded from '@/static/model/model.json'
-
-// import SnackbarMessage from '@/components/Snackbar'
 const _SheetJSFT = ['jpg', 'jpeg', 'png']
   .map(function (x) {
     return '.' + x
   })
   .join(',')
 export default {
-  // components: {
-  //   SnackbarMessage
-  // },
   data() {
     return {
       SheetJSFT: _SheetJSFT,
@@ -125,7 +115,6 @@ export default {
       garbageClassification: '.......',
       model: '',
       modelReady: false,
-      tfModel: '',
       targetClasses: [
         'carboard',
         'bottle',
@@ -140,22 +129,14 @@ export default {
     this.loadModel()
   },
   methods: {
-    ...mapActions({
-      notifFileTooBig: 'notifFileTooBig',
-      predictImage: 'home/predictImage',
-      loadModelBack: 'home/loadModel',
-    }),
-    ...mapMutations({
-      setState: 'home/setState',
-    }),
     onFileChangeGarbage(e) {
       //   this.getImageFromCanvas(e)
       const files = e.target.files || e.dataTransfer.files
-      if (files[0].size > 1000000) {
-        this.notifFileTooBig()
-        document.getElementById('file').value = ''
-        return
-      }
+      //   if (files[0].size > 1000000) {
+      //     this.notifFileTooBig()
+      //     document.getElementById('file').value = ''
+      //     return
+      //   }
       if (!files.length) return
       this.createImageGarbage(files[0])
     },
@@ -166,31 +147,18 @@ export default {
         this.imageGarbage = e.target.result
       }
       reader.readAsDataURL(file)
-      this.setState({ imgData: this.imageGarbage })
-      //   this.predictImage()
       this.lanjutan()
     },
     removeImageGarbage(e) {
       this.imageGarbage = ''
       this.garbageClassification = '.......'
     },
-
     async loadModel() {
-      // await tf.loadLayersModel(modelLoaded)
-      //   const handler = tfnode.io.fileSystem(modelLoaded)
-      //   const model = await tf.loadLayersModel(modelLoaded)
-      const model = await tf.loadLayersModel(
+      this.model = await tf.loadLayersModel(
         'http://127.0.0.1:8080/static/model/model.json'
       )
-      console.log('Model loaded', model)
+      console.log('Model loaded', this.model)
     },
-    // predictImage(input) {
-    //   const tfarray = tf.tensor3d(input, [1, input.length]);
-    //   const prediction = this.model.predict(tfarray)
-    //   prediction.print()
-    //   return prediction.get(0,0)
-    // }
-    // load image to get the img input
     loadImage(src) {
       return new Promise((resolve, reject) => {
         const img = new Image()
@@ -208,24 +176,10 @@ export default {
       })
     },
     async lanjutan() {
-      await this.loadModel().then(async (pretrainedModel) => {
-        await this.loadImage(this.imageGarbage).then((tensor) => {
-          console.log('ini tensor yg ud diproses ', tensor)
-          //   tensor.shape.shift()
-          //   const predictions = await pretrainedModel.predict(tensor)
-          this.setState({ tensorBack: tensor })
-          this.predictImage()
-          //   const top6 = Array.from(predictions).map((p, i) => {
-          //     return {
-          //       probability: p,
-          //       className: this.targetClasses[i],
-          //     }
-          //   })
-
-          // Because of the way Tensorflow.js works, you must call print on a Tensor instead of console.log.
-          // prediction.print()
-          //   this.garbageClassification = top6.className
-        })
+      await this.loadImage(this.imageGarbage).then(async (tensor) => {
+        console.log('ini tensor yg ud diproses ', tensor)
+        const classes = await this.model.predict(tensor).data()
+        console.log('ini classes ', classes)
       })
     },
   },

@@ -93,7 +93,7 @@
 </style>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 import * as tf from '@tensorflow/tfjs'
 // import { loadFrozenModel } from '@tensorflow/tfjs-converter'
 // import * as tfnode from '@tensorflow/tfjs-node'
@@ -135,12 +135,17 @@ export default {
       ],
     }
   },
-  //   mounted() {
-  //     this.loadModel()
-  //   },
+  mounted() {
+    this.loadModel()
+  },
   methods: {
     ...mapActions({
       notifFileTooBig: 'notifFileTooBig',
+      predictImage: 'home/predictImage',
+      loadModel: 'home/loadModel',
+    }),
+    ...mapMutations({
+      setState: 'home/setState',
     }),
     onFileChangeGarbage(e) {
       const files = e.target.files || e.dataTransfer.files
@@ -151,15 +156,17 @@ export default {
       }
       if (!files.length) return
       this.createImageGarbage(files[0])
-      this.lanjutan()
     },
     createImageGarbage(file) {
       const reader = new FileReader()
 
       reader.onload = (e) => {
         this.imageGarbage = e.target.result
+        this.setState({ imgData: this.imageGarbage })
       }
       reader.readAsDataURL(file)
+
+      this.predictImage()
     },
     removeImageGarbage(e) {
       this.imageGarbage = ''

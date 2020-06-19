@@ -36,6 +36,9 @@
                       >&#215;</a
                     >
                   </template>
+                  <canvas id="myCanvas" style="border: 1px solid #d3d3d3;">
+                    <img id="output" hidden />
+                  </canvas>
                   <div class="ipl-input-hint">
                     <p>
                       Maksimal ukuran file 1 Mb, hanya menerima file .jpeg, .jpg
@@ -148,6 +151,7 @@ export default {
       setState: 'home/setState',
     }),
     onFileChangeGarbage(e) {
+      this.getImageFromCanvas(e)
       const files = e.target.files || e.dataTransfer.files
       if (files[0].size > 1000000) {
         this.notifFileTooBig()
@@ -162,11 +166,10 @@ export default {
 
       reader.onload = (e) => {
         this.imageGarbage = e.target.result
-        this.setState({ imgData: this.imageGarbage })
       }
       reader.readAsDataURL(file)
 
-      this.predictImage()
+      //   this.predictImage()
     },
     removeImageGarbage(e) {
       this.imageGarbage = ''
@@ -259,6 +262,25 @@ export default {
           this.garbageClassification = top6.className
         })
       })
+    },
+    getImageFromCanvas(e) {
+      const output = document.getElementById('output')
+      output.src = URL.createObjectURL(e.target.files[0])
+      output.onload = () => {
+        URL.revokeObjectURL(output.src)
+        const c = document.getElementById('myCanvas')
+        const ctx = c.getContext('2d')
+        ctx.drawImage(output, 0, 0, 256, 256)
+        const imgData = ctx.getImageData(0, 0, 256, 256).data
+        const input = []
+        for (let i = 0; i < imgData.length; i++) {
+          if (i % 4 !== 3) {
+            input.push(imgData[i] / 255)
+          }
+        }
+        this.setState({ imgData: input })
+        this.predictImage()
+      }
     },
   },
 }

@@ -13,10 +13,15 @@ let model
 //   //   model.summary()
 // }
 
+export const state = () => ({
+  imgData: '',
+})
+
 const IMAGE_SIZE = 256
 
 const normalizationConstant = 1.0 / 255.0
 const img = ({ state }) => {
+  console.log('ini imgData', state.imgData)
   tf.browser
     .fromPixels(state.imgData, 1)
     .resizeBilinear([IMAGE_SIZE, IMAGE_SIZE], false)
@@ -36,10 +41,6 @@ export const mutations = {
     keys.forEach((key) => (state[key] = params[key]))
   },
 }
-
-export const state = () => ({
-  imgData: '',
-})
 
 export const actions = {
   async loadModel() {

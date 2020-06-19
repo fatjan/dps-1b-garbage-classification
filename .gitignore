@@ -91,3 +91,7 @@ sw.*
 
 #do not upload model sources, file size is too big
 static/model/
+
+package-lock.json
+
+yarn.lock

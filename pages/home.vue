@@ -30,7 +30,7 @@
                     v-if="imageGarbage"
                     :src="imageGarbage"
                     alt="your image"
-                    height="500"
+                    height="400"
                   />
                   <template v-if="imageGarbage">
                     <a class="file-remove" href="#" @click="removeImageGarbage"
@@ -108,7 +108,7 @@ export default {
       rules: {
         size: (value) => {
           return (
-            !value || value.size <= 1000000 || 'Maximum image size is 1 MB.'
+            !value || value.size <= 1000000 || 'Maximum image size is 5 MB.'
           )
         },
       },
@@ -132,11 +132,11 @@ export default {
     onFileChangeGarbage(e) {
       //   this.getImageFromCanvas(e)
       const files = e.target.files || e.dataTransfer.files
-      //   if (files[0].size > 1000000) {
-      //     this.notifFileTooBig()
-      //     document.getElementById('file').value = ''
-      //     return
-      //   }
+      if (files[0].size > 5000000) {
+        this.notifFileTooBig()
+        document.getElementById('file').value = ''
+        return
+      }
       if (!files.length) return
       this.createImageGarbage(files[0])
     },

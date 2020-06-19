@@ -100,7 +100,7 @@ import { mapActions, mapMutations } from 'vuex'
 import * as tf from '@tensorflow/tfjs'
 // import { loadFrozenModel } from '@tensorflow/tfjs-converter'
 // import * as tfnode from '@tensorflow/tfjs-node'
-import cardboard from '@/assets/image/cb.jpg'
+// import cardboard from '@/assets/image/cb.jpg'
 // import modelLoaded from '@/static/model/model.json'
 
 // import SnackbarMessage from '@/components/Snackbar'
@@ -145,7 +145,7 @@ export default {
     ...mapActions({
       notifFileTooBig: 'notifFileTooBig',
       predictImage: 'home/predictImage',
-      loadModel: 'home/loadModel',
+      loadModelBack: 'home/loadModel',
     }),
     ...mapMutations({
       setState: 'home/setState',
@@ -169,22 +169,23 @@ export default {
       }
       reader.readAsDataURL(file)
       this.setState({ imgData: this.imageGarbage })
-      this.predictImage()
+      //   this.predictImage()
+      this.lanjutan()
     },
     removeImageGarbage(e) {
       this.imageGarbage = ''
       this.garbageClassification = '.......'
     },
 
-    // async loadModel() {
-    //   // await tf.loadLayersModel(modelLoaded)
-    //   //   const handler = tfnode.io.fileSystem(modelLoaded)
-    //   //   const model = await tf.loadLayersModel(modelLoaded)
-    //   const model = await tf.loadLayersModel(
-    //     'http://127.0.0.1:8080/static/model/model.json'
-    //   )
-    //   console.log('Model loaded', model)
-    // },
+    async loadModel() {
+      // await tf.loadLayersModel(modelLoaded)
+      //   const handler = tfnode.io.fileSystem(modelLoaded)
+      //   const model = await tf.loadLayersModel(modelLoaded)
+      const model = await tf.loadLayersModel(
+        'http://127.0.0.1:8080/static/model/model.json'
+      )
+      console.log('Model loaded', model)
+    },
     // predictImage(input) {
     //   const tfarray = tf.tensor3d(input, [1, input.length]);
     //   const prediction = this.model.predict(tfarray)
@@ -244,22 +245,23 @@ export default {
       return batchedImage
     },
     async lanjutan() {
-      await this.loadModel().then((pretrainedModel) => {
-        this.loadImage(cardboard).then(async (tensor) => {
+      await this.loadModel().then(async (pretrainedModel) => {
+        await this.loadImage(this.imageGarbage).then((tensor) => {
           console.log('ini tensor yg ud diproses ', tensor)
-          tensor.shape.shift()
-          console.log('ini tensor shape ', tensor.shape)
-          const predictions = await pretrainedModel.predict(tensor).data()
-          const top6 = Array.from(predictions).map((p, i) => {
-            return {
-              probability: p,
-              className: this.targetClasses[i],
-            }
-          })
+          //   tensor.shape.shift()
+          //   const predictions = await pretrainedModel.predict(tensor)
+          this.setState({ tensorBack: tensor })
+          this.predictImage()
+          //   const top6 = Array.from(predictions).map((p, i) => {
+          //     return {
+          //       probability: p,
+          //       className: this.targetClasses[i],
+          //     }
+          //   })
 
           // Because of the way Tensorflow.js works, you must call print on a Tensor instead of console.log.
           // prediction.print()
-          this.garbageClassification = top6.className
+          //   this.garbageClassification = top6.className
         })
       })
     },

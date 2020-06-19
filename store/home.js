@@ -19,17 +19,6 @@ export const state = () => ({
 
 const IMAGE_SIZE = 256
 
-const normalizationConstant = 1.0 / 255.0
-const img = ({ state }) => {
-  console.log('ini imgData', state.imgData)
-  tf.browser
-    .fromPixels(state.imgData, 1)
-    .resizeBilinear([IMAGE_SIZE, IMAGE_SIZE], false)
-    .expandDims(0)
-    .toFloat()
-    .mul(normalizationConstant)
-}
-
 // const logits = tf.tidy(() => {
 //   loadModel()
 //   return model.predict(img)
@@ -49,8 +38,17 @@ export const actions = {
     // load Model
     model = await tf.loadLayersModel(MODEL_PATH, {})
   },
-  async predictImage() {
-    console.log()
+  async predictImage({ state }) {
+    const normalizationConstant = 1.0 / 255.0
+    const img = () => {
+      console.log('ini imgData', state.imgData)
+      tf.browser
+        .fromPixels(state.imgData, 1)
+        .resizeBilinear([IMAGE_SIZE, IMAGE_SIZE], false)
+        .expandDims(0)
+        .toFloat()
+        .mul(normalizationConstant)
+    }
     const classes = await model.predict(img)
     console.log('ini classes ', classes)
   },

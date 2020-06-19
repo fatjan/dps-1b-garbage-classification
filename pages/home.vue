@@ -151,7 +151,7 @@ export default {
       setState: 'home/setState',
     }),
     onFileChangeGarbage(e) {
-      this.getImageFromCanvas(e)
+      //   this.getImageFromCanvas(e)
       const files = e.target.files || e.dataTransfer.files
       if (files[0].size > 1000000) {
         this.notifFileTooBig()
@@ -168,23 +168,23 @@ export default {
         this.imageGarbage = e.target.result
       }
       reader.readAsDataURL(file)
-
-      //   this.predictImage()
+      this.setState({ imgData: this.imageGarbage })
+      this.predictImage()
     },
     removeImageGarbage(e) {
       this.imageGarbage = ''
       this.garbageClassification = '.......'
     },
 
-    async loadModel() {
-      // await tf.loadLayersModel(modelLoaded)
-      //   const handler = tfnode.io.fileSystem(modelLoaded)
-      //   const model = await tf.loadLayersModel(modelLoaded)
-      const model = await tf.loadLayersModel(
-        'http://127.0.0.1:8080/static/model/model.json'
-      )
-      console.log('Model loaded', model)
-    },
+    // async loadModel() {
+    //   // await tf.loadLayersModel(modelLoaded)
+    //   //   const handler = tfnode.io.fileSystem(modelLoaded)
+    //   //   const model = await tf.loadLayersModel(modelLoaded)
+    //   const model = await tf.loadLayersModel(
+    //     'http://127.0.0.1:8080/static/model/model.json'
+    //   )
+    //   console.log('Model loaded', model)
+    // },
     // predictImage(input) {
     //   const tfarray = tf.tensor3d(input, [1, input.length]);
     //   const prediction = this.model.predict(tfarray)

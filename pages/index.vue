@@ -32,16 +32,28 @@
                     alt="your image"
                     hidden
                   /> -->
+                  <br />
                   <img :src="imageGarbage" height="250" />
                   <template v-if="imageGarbage">
                     <a class="file-remove" href="#" @click="removeImageGarbage"
                       >&#215;</a
                     >
                   </template>
+                  <br />
+                  <v-progress-linear
+                    name="progress-linear"
+                    indeterminate
+                    color="green"
+                  ></v-progress-linear>
+                  <v-progress-circular
+                    :indeterminate="progress"
+                    color="red"
+                  ></v-progress-circular>
+                  <br />
                   <div class="ipl-input-hint">
                     <p>
-                      Maksimal ukuran file 1 Mb, hanya menerima file .jpeg, .jpg
-                      dan .png
+                      Min. file size is 275x275, accept .png, .jpeg, or .jpg
+                      file
                     </p>
                   </div>
                   <br />
@@ -92,6 +104,10 @@
 .links {
   padding-top: 15px;
 }
+
+.v-progress-circular {
+  margin: 1rem;
+}
 </style>
 
 <script>
@@ -124,8 +140,7 @@ export default {
         'plastic',
         'trash',
       ],
-      initImg:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcStI3trUQzW4knxTLyEq2deOUx6kIj7oIfUFSsTpEUhPlAXoTuM&usqp=CAU',
+      progress: false,
     }
   },
   mounted() {
@@ -133,6 +148,9 @@ export default {
   },
   methods: {
     onFileChangeGarbage(e) {
+      setTimeout(() => {
+        this.progress = true
+      }, 1500)
       const files = e.target.files || e.dataTransfer.files
       //   if (files[0].size > 5000000) {
       //     this.notifFileTooBig()

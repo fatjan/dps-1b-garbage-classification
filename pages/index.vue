@@ -6,16 +6,16 @@
           Garbage Classification
         </p>
         <p class="instruction">
-          Upload your garbage image here to see what type of garbage it is.
+          Upload your garbage image here to see its classification.
         </p>
         <!-- <SnackbarMessage /> -->
         <div>
           <v-row>
             <v-col cols="12">
-              <v-card>
+              <v-card class="card-input">
                 <v-form>
                   <v-card-text>
-                    <div v-if="isLoading" class="loading">
+                    <div v-if="isLoading" class="loading-linear">
                       <v-progress-linear
                         :size="30"
                         color="#f47522"
@@ -37,6 +37,13 @@
                           @change="onFileChangeGarbage"
                         />
                       </div>
+                      <br />
+                      <div class="ipl-input-hint">
+                        <p>
+                          Min. file size is 275 x 275, accept .png, .jpeg, or
+                          .jpg file
+                        </p>
+                      </div>
                     </div>
                     <br />
 
@@ -49,32 +56,29 @@
                         @click="removeImageGarbage"
                         >&#215;</a
                       >
+                      <br />
+                      <div v-if="isImageLoading" class="loading">
+                        <div>
+                          <v-progress-circular
+                            :size="30"
+                            color="#f47522"
+                            indeterminate
+                          ></v-progress-circular>
+                        </div>
+                        <div style="marging-top: 15px;">
+                          <p>Getting image classification ...</p>
+                        </div>
+                      </div>
+                      <div>
+                        <h3 class="subtitle-1">
+                          This garbage is classified as
+                          {{ garbageClassification }}
+                        </h3>
+                      </div>
                     </template>
                     <br />
                     <br />
-                    <div class="ipl-input-hint">
-                      <p>
-                        Min. file size is 275 x 275, accept .png, .jpeg, or .jpg
-                        file
-                      </p>
-                    </div>
                     <br />
-                    <div v-if="isImageLoading" class="loading">
-                      <v-progress-circular
-                        :size="30"
-                        color="#f47522"
-                        indeterminate
-                      ></v-progress-circular>
-                      <div style="marging-top: 15px;">
-                        <p>Getting image classification ...</p>
-                      </div>
-                    </div>
-                    <div>
-                      <h3 class="subtitle-1">
-                        This garbage is classified as
-                        {{ garbageClassification }}
-                      </h3>
-                    </div>
                   </v-card-text>
                   <v-card-actions></v-card-actions>
                 </v-form>
@@ -119,8 +123,8 @@
   padding-top: 15px;
 }
 
-.loading-dialog {
-  background-color: #303030;
+.loading-linear {
+  margin-top: 220px;
 }
 
 .file-remove {
@@ -145,6 +149,16 @@
   color: green;
   margin-bottom: 0;
   line-height: 1.6em;
+}
+
+.card-input {
+  background-color: rgb(26, 184, 144);
+  min-height: 500px;
+}
+
+input[type='file'] {
+  border: 2px solid greenyellow;
+  border-radius: 4px;
 }
 </style>
 
@@ -238,11 +252,11 @@ export default {
     },
     async afterUpload() {
       await this.loadImage(this.imageGarbage).then(async (tensor) => {
-        this.isImageLoading = false
         const classes = await this.model.predict(tensor).data()
         const maxPoint = Math.max(...classes)
         const index = classes.indexOf(maxPoint)
         const predictedClass = this.targetClasses[index]
+        this.isImageLoading = false
         this.garbageClassification = predictedClass + '.'
       })
     },

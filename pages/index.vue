@@ -26,7 +26,7 @@
                         <p>Please wait ...</p>
                       </div>
                     </div>
-                    <div class="file-input" :hidden="hidden">
+                    <div class="file-input" :hidden="hidden" multiple>
                       <div class="image-file image-file--rounded">
                         <input
                           id="file"
@@ -34,7 +34,7 @@
                           :accept="SheetJSFT"
                           :rules="[rules.size]"
                           class="custom-file-input"
-                          @change="onFileChangeGarbage"
+                          @input="onFileChangeGarbage"
                         />
                       </div>
                       <br />
@@ -152,12 +152,12 @@
 }
 
 .card-input {
-  background-color: rgb(26, 184, 144);
+  background-color: #3cb371;
   min-height: 500px;
 }
 
 input[type='file'] {
-  border: 2px solid greenyellow;
+  border: 2px solid #f47522;
   border-radius: 4px;
 }
 </style>

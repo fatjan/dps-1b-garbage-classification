@@ -157,7 +157,7 @@
 }
 
 input[type='file'] {
-  border: 2px solid #f47522;
+  border: 2px solid greenyellow;
   border-radius: 4px;
 }
 </style>
@@ -229,7 +229,7 @@ export default {
     },
     async loadModel() {
       this.model = await tf.loadLayersModel(
-        'http://127.0.0.1:8080/static/model/model.json'
+        'https://garbage-model.imfast.io/results/model.json'
       )
       this.isLoading = false
       this.hidden = false

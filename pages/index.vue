@@ -1,83 +1,89 @@
 <template>
   <div class="container">
-    <div>
-      <h1 class="title">
-        Garbage Classification
-      </h1>
-      <p class="instruction">
-        Upload your garbage image here to see what type of garbage it is.
-      </p>
-      <!-- <SnackbarMessage /> -->
+    <v-flex>
       <div>
-        <v-row>
-          <v-col cols="12">
-            <v-card>
-              <v-form>
-                <v-card-text>
-                  <div v-if="isLoading" class="loading">
-                    <v-progress-linear
-                      :size="30"
-                      color="#f47522"
-                      indeterminate
-                    ></v-progress-linear>
+        <p class="page-title">
+          Garbage Classification
+        </p>
+        <p class="instruction">
+          Upload your garbage image here to see what type of garbage it is.
+        </p>
+        <!-- <SnackbarMessage /> -->
+        <div>
+          <v-row>
+            <v-col cols="12">
+              <v-card>
+                <v-form>
+                  <v-card-text>
+                    <div v-if="isLoading" class="loading">
+                      <v-progress-linear
+                        :size="30"
+                        color="#f47522"
+                        indeterminate
+                      ></v-progress-linear>
+                      <br />
+                      <div>
+                        <p>Please wait ...</p>
+                      </div>
+                    </div>
+                    <div class="file-input" :hidden="hidden">
+                      <div class="image-file image-file--rounded">
+                        <input
+                          id="file"
+                          type="file"
+                          :accept="SheetJSFT"
+                          :rules="[rules.size]"
+                          class="custom-file-input"
+                          @change="onFileChangeGarbage"
+                        />
+                      </div>
+                    </div>
                     <br />
-                    <div>
-                      <p>Please wait ...</p>
-                    </div>
-                  </div>
-                  <div class="file-input" :hidden="hidden">
-                    <div class="image-file image-file--rounded">
-                      <input
-                        id="file"
-                        type="file"
-                        :accept="SheetJSFT"
-                        :rules="[rules.size]"
-                        class="custom-file-input"
-                        @change="onFileChangeGarbage"
-                      />
-                    </div>
-                  </div>
-                  <br />
 
-                  <br />
-                  <img :src="imageGarbage" height="250" />
-                  <template v-if="imageGarbage">
-                    <a class="file-remove" href="#" @click="removeImageGarbage"
-                      >&#215;</a
-                    >
-                  </template>
-                  <br />
-                  <br />
-                  <div class="ipl-input-hint">
-                    <p>
-                      Min. file size is 275 x 275, accept .png, .jpeg, or .jpg
-                      file
-                    </p>
-                  </div>
-                  <br />
-                  <div v-if="isImageLoading" class="loading">
-                    <v-progress-circular
-                      :size="30"
-                      color="#f47522"
-                      indeterminate
-                    ></v-progress-circular>
-                    <div style="marging-top: 15px;">
-                      <p>Getting image classification ...</p>
+                    <br />
+                    <img :src="imageGarbage" height="250" />
+                    <template v-if="imageGarbage">
+                      <a
+                        class="file-remove"
+                        href="#"
+                        @click="removeImageGarbage"
+                        >&#215;</a
+                      >
+                    </template>
+                    <br />
+                    <br />
+                    <div class="ipl-input-hint">
+                      <p>
+                        Min. file size is 275 x 275, accept .png, .jpeg, or .jpg
+                        file
+                      </p>
                     </div>
-                  </div>
-                  <div>
-                    <h3 class="subtitle-1">
-                      This garbage is classified as {{ garbageClassification }}
-                    </h3>
-                  </div>
-                </v-card-text>
-                <v-card-actions></v-card-actions>
-              </v-form>
-            </v-card>
-          </v-col>
-        </v-row>
+                    <br />
+                    <div v-if="isImageLoading" class="loading">
+                      <v-progress-circular
+                        :size="30"
+                        color="#f47522"
+                        indeterminate
+                      ></v-progress-circular>
+                      <div style="marging-top: 15px;">
+                        <p>Getting image classification ...</p>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 class="subtitle-1">
+                        This garbage is classified as
+                        {{ garbageClassification }}
+                      </h3>
+                    </div>
+                  </v-card-text>
+                  <v-card-actions></v-card-actions>
+                </v-form>
+              </v-card>
+            </v-col>
+          </v-row>
+        </div>
       </div>
-    </div>
+    </v-flex>
   </div>
 </template>
 
@@ -123,6 +129,14 @@
   text-decoration: none;
   font-size: 24px;
   color: rgba(0, 0, 0, 0.6);
+}
+
+.page-title {
+  word-break: break-word;
+  font-size: 54px;
+  color: rgb(4, 78, 4);
+  margin-bottom: 0;
+  line-height: 1.6em;
 }
 
 .instruction {

@@ -128,7 +128,7 @@
 .instruction {
   word-break: break-word;
   font-size: 34px;
-  text-color: green;
+  color: green;
   margin-bottom: 0;
   line-height: 1.6em;
 }

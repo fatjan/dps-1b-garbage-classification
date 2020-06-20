@@ -2,10 +2,10 @@
   <div class="container">
     <div>
       <h1 class="title">
-        Welcome
+        Garbage Classification
       </h1>
       <h2 class="subtitle">
-        Upload your image here
+        Upload your garbage image here to see what type of garbage it is.
       </h2>
       <!-- <SnackbarMessage /> -->
       <div>
@@ -14,7 +14,17 @@
             <v-card>
               <v-form>
                 <v-card-text>
-                  <div class="file-input">
+                  <div v-if="isLoading" class="loading">
+                    <v-progress-linear
+                      :size="30"
+                      color="#f47522"
+                      indeterminate
+                    ></v-progress-linear>
+                    <div style="marging-top: 15px;">
+                      <p>Please wait..</p>
+                    </div>
+                  </div>
+                  <div class="file-input" :hidden="hidden">
                     <div class="image-file image-file--rounded">
                       <input
                         id="file"
@@ -40,15 +50,6 @@
                     >
                   </template>
                   <br />
-                  <v-progress-linear
-                    name="progress-linear"
-                    indeterminate
-                    color="green"
-                  ></v-progress-linear>
-                  <v-progress-circular
-                    :indeterminate="progress"
-                    color="red"
-                  ></v-progress-circular>
                   <br />
                   <div class="ipl-input-hint">
                     <p>
@@ -105,8 +106,8 @@
   padding-top: 15px;
 }
 
-.v-progress-circular {
-  margin: 1rem;
+.loading-dialog {
+  background-color: #303030;
 }
 </style>
 
@@ -141,6 +142,9 @@ export default {
         'trash',
       ],
       progress: false,
+      hidden: true,
+      isLoading: true,
+      loading: true,
     }
   },
   mounted() {
@@ -178,7 +182,8 @@ export default {
       this.model = await tf.loadLayersModel(
         'http://127.0.0.1:8080/static/model/model.json'
       )
-      console.log('Model loaded', this.model)
+      this.isLoading = false
+      this.hidden = false
     },
     loadImage(src) {
       return new Promise((resolve, reject) => {

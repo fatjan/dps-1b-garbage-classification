@@ -4,9 +4,9 @@
       <h1 class="title">
         Garbage Classification
       </h1>
-      <h2 class="subtitle">
+      <p class="instruction">
         Upload your garbage image here to see what type of garbage it is.
-      </h2>
+      </p>
       <!-- <SnackbarMessage /> -->
       <div>
         <v-row>
@@ -20,8 +20,9 @@
                       color="#f47522"
                       indeterminate
                     ></v-progress-linear>
-                    <div style="marging-top: 15px;">
-                      <p>Please wait..</p>
+                    <br />
+                    <div>
+                      <p>Please wait ...</p>
                     </div>
                   </div>
                   <div class="file-input" :hidden="hidden">
@@ -36,12 +37,8 @@
                       />
                     </div>
                   </div>
-                  <!-- <img
-                    v-if="imageGarbage"
-                    :src="imageGarbage"
-                    alt="your image"
-                    hidden
-                  /> -->
+                  <br />
+
                   <br />
                   <img :src="imageGarbage" height="250" />
                   <template v-if="imageGarbage">
@@ -53,11 +50,21 @@
                   <br />
                   <div class="ipl-input-hint">
                     <p>
-                      Min. file size is 275x275, accept .png, .jpeg, or .jpg
+                      Min. file size is 275 x 275, accept .png, .jpeg, or .jpg
                       file
                     </p>
                   </div>
                   <br />
+                  <div v-if="isImageLoading" class="loading">
+                    <v-progress-circular
+                      :size="30"
+                      color="#f47522"
+                      indeterminate
+                    ></v-progress-circular>
+                    <div style="marging-top: 15px;">
+                      <p>Getting image classification ...</p>
+                    </div>
+                  </div>
                   <div>
                     <h3 class="subtitle-1">
                       This garbage is classified as {{ garbageClassification }}
@@ -109,6 +116,22 @@
 .loading-dialog {
   background-color: #303030;
 }
+
+.file-remove {
+  position: absolute;
+  margin: 0 0 16px 16px;
+  text-decoration: none;
+  font-size: 24px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.instruction {
+  word-break: break-word;
+  font-size: 34px;
+  text-color: green;
+  margin-bottom: 0;
+  line-height: 1.6em;
+}
 </style>
 
 <script>
@@ -144,7 +167,7 @@ export default {
       progress: false,
       hidden: true,
       isLoading: true,
-      loading: true,
+      isImageLoading: false,
     }
   },
   mounted() {
@@ -152,9 +175,7 @@ export default {
   },
   methods: {
     onFileChangeGarbage(e) {
-      setTimeout(() => {
-        this.progress = true
-      }, 1500)
+      this.isImageLoading = true
       const files = e.target.files || e.dataTransfer.files
       //   if (files[0].size > 5000000) {
       //     this.notifFileTooBig()
@@ -203,6 +224,7 @@ export default {
     },
     async afterUpload() {
       await this.loadImage(this.imageGarbage).then(async (tensor) => {
+        this.isImageLoading = false
         const classes = await this.model.predict(tensor).data()
         const maxPoint = Math.max(...classes)
         const index = classes.indexOf(maxPoint)

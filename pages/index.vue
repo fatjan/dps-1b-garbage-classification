@@ -194,6 +194,7 @@ export default {
       ],
       progress: false,
       hidden: true,
+      // isLoading is true when the model is being loaded into the page
       isLoading: true,
       isImageLoading: false,
     }
@@ -202,6 +203,7 @@ export default {
     this.loadModel()
   },
   methods: {
+    // the method to select and upload image
     onFileChangeGarbage(e) {
       this.isImageLoading = true
       const files = e.target.files || e.dataTransfer.files
@@ -213,6 +215,8 @@ export default {
       if (!files.length) return
       this.createImageGarbage(files[0])
     },
+
+    // the uploaded image is received
     createImageGarbage(file) {
       const reader = new FileReader()
 
@@ -223,17 +227,25 @@ export default {
       reader.readAsDataURL(file)
       this.garbageClassification = '.......'
     },
+
+    // to remove image
     removeImageGarbage(e) {
       this.imageGarbage = ''
       this.garbageClassification = '.......'
     },
+
+    // load the model, used when opening the page
     async loadModel() {
       this.model = await tf.loadLayersModel(
         'https://garbage-model.imfast.io/results/model.json'
       )
+      // isLoading is false after model is successfully loaded into the page
       this.isLoading = false
       this.hidden = false
     },
+
+    // to load the image and resize it into 256 x 256
+    // the return value is a tensor of the image that will be fed into the model
     loadImage(src) {
       return new Promise((resolve, reject) => {
         const img = new Image()
@@ -250,13 +262,18 @@ export default {
         img.onerror = (err) => reject(err)
       })
     },
+
+    // the process after uploading the image
     async afterUpload() {
       await this.loadImage(this.imageGarbage).then(async (tensor) => {
+        // the model predicts image classification here
         const classes = await this.model.predict(tensor).data()
+        // find the maximum number from different classes to see, which classification the garbage is
         const maxPoint = Math.max(...classes)
         const index = classes.indexOf(maxPoint)
         const predictedClass = this.targetClasses[index]
         this.isImageLoading = false
+        // the resulting image classification
         this.garbageClassification = predictedClass + '.'
       })
     },

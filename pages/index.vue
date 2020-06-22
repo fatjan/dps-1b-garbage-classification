@@ -185,7 +185,7 @@ export default {
       model: '',
       modelReady: false,
       targetClasses: [
-        'carboard',
+        'cardboard',
         'glass',
         'metal',
         'paper',

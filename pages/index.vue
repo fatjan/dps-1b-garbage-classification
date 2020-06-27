@@ -26,56 +26,100 @@
                         <p>Please wait ...</p>
                       </div>
                     </div>
-                    <div class="file-input" :hidden="hidden" multiple>
-                      <div class="image-file image-file--rounded">
-                        <input
-                          id="file"
-                          type="file"
-                          :accept="SheetJSFT"
-                          :rules="[rules.size]"
-                          class="custom-file-input"
-                          @input="onFileChangeGarbage"
-                        />
-                      </div>
-                      <br />
-                      <div class="ipl-input-hint">
-                        <p>
-                          Min. file size is 275 x 275, accept .png, .jpeg, or
-                          .jpg file
-                        </p>
-                      </div>
-                    </div>
-                    <br />
+                    <div v-else>
+                      <v-row>
+                        <v-col cols="12" md="6" xl="6" lg="6">
+                          <div class="file-input" :hidden="hidden" multiple>
+                            <div class="image-file image-file--rounded">
+                              <input
+                                id="file"
+                                type="file"
+                                :accept="SheetJSFT"
+                                :rules="[rules.size]"
+                                class="custom-file-input"
+                                @input="onFileChangeGarbage"
+                              />
+                            </div>
+                            <br />
+                            <div class="ipl-input-hint">
+                              <p>
+                                Min. file size is 275 x 275, accept .png, .jpeg,
+                                or .jpg file
+                              </p>
+                            </div>
+                          </div>
 
-                    <br />
-                    <img :src="imageGarbage" height="250" />
-                    <template v-if="imageGarbage">
-                      <a
-                        class="file-remove"
-                        href="#"
-                        @click="removeImageGarbage"
-                        >&#215;</a
-                      >
-                      <br />
-                      <div v-if="isImageLoading" class="loading">
-                        <div>
-                          <v-progress-circular
-                            :size="30"
-                            color="#f47522"
-                            indeterminate
-                          ></v-progress-circular>
-                        </div>
-                        <div style="marging-top: 15px;">
-                          <p>Getting image classification ...</p>
-                        </div>
-                      </div>
-                      <div>
-                        <h3 class="subtitle-1">
-                          This garbage is classified as
-                          {{ garbageClassification }}
-                        </h3>
-                      </div>
-                    </template>
+                          <br />
+
+                          <br />
+                          <img :src="imageGarbage" height="250" />
+                          <template v-if="imageGarbage">
+                            <a
+                              class="file-remove"
+                              href="#"
+                              @click="removeImageGarbage"
+                              >&#215;</a
+                            >
+                            <br />
+                            <div v-if="isImageLoading" class="loading">
+                              <div>
+                                <v-progress-circular
+                                  :size="30"
+                                  color="#f47522"
+                                  indeterminate
+                                ></v-progress-circular>
+                              </div>
+                              <div style="marging-top: 15px;">
+                                <p>Getting image classification ...</p>
+                              </div>
+                            </div>
+                            <div>
+                              <h3 class="subtitle-1">
+                                This garbage is classified as
+                                {{ garbageClassification }}
+                              </h3>
+                            </div>
+                          </template>
+                        </v-col>
+                        <v-col cols="12" md="6" xl="6" lg="6">
+                          <!-- <v-col cols="12" sm="6" offset-sm="3"> -->
+                          <v-card>
+                            <v-container fluid>
+                              <v-row>
+                                <v-col
+                                  v-for="image in images"
+                                  :key="image.id"
+                                  class="d-flex child-flex"
+                                  cols="2"
+                                >
+                                  <v-card flat tile class="d-flex">
+                                    <v-img
+                                      :src="image.src"
+                                      aspect-ratio="1"
+                                      class="grey lighten-2"
+                                    >
+                                      <template v-slot:placeholder>
+                                        <v-row
+                                          class="fill-height ma-0"
+                                          align="center"
+                                          justify="center"
+                                        >
+                                          <v-progress-circular
+                                            indeterminate
+                                            color="grey lighten-5"
+                                          ></v-progress-circular>
+                                        </v-row>
+                                      </template>
+                                    </v-img>
+                                  </v-card>
+                                </v-col>
+                              </v-row>
+                            </v-container>
+                          </v-card>
+                          <!-- </v-col> -->
+                        </v-col>
+                      </v-row>
+                    </div>
                     <br />
                     <br />
                     <br />
@@ -197,11 +241,26 @@ export default {
       // isLoading is true when the model is being loaded into the page
       isLoading: true,
       isImageLoading: false,
+      images: [
+        {
+          id: 1,
+          title: 'Favorite road trips',
+          src: '@/assets/image/metal/cans.jpeg',
+          flex: 6,
+        },
+        {
+          id: 2,
+          title: 'Best airlines',
+          src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg',
+          flex: 6,
+        },
+      ],
     }
   },
   mounted() {
     this.loadModel()
   },
+  // method
   methods: {
     // the method to select and upload image
     onFileChangeGarbage(e) {
@@ -237,7 +296,7 @@ export default {
     // load the model, used when opening the page
     async loadModel() {
       this.model = await tf.loadLayersModel(
-        'https://garbage-model.imfast.io/results/model.json'
+        'http://127.0.0.1:8080/static/model/model.json'
       )
       // isLoading is false after model is successfully loaded into the page
       this.isLoading = false
@@ -268,6 +327,7 @@ export default {
       await this.loadImage(this.imageGarbage).then(async (tensor) => {
         // the model predicts image classification here
         const classes = await this.model.predict(tensor).data()
+        console.log('ini classes', classes)
         // find the maximum number from different classes to see, which classification the garbage is
         const maxPoint = Math.max(...classes)
         const index = classes.indexOf(maxPoint)

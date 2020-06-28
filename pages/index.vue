@@ -15,7 +15,7 @@
               <v-card class="card-input">
                 <v-form>
                   <v-card-text>
-                    <div v-if="isLoading" class="loading-linear">
+                    <!-- <div v-if="isLoading" class="loading-linear">
                       <v-progress-linear
                         :size="30"
                         color="#f47522"
@@ -25,8 +25,8 @@
                       <div>
                         <p>Please wait ...</p>
                       </div>
-                    </div>
-                    <div v-else>
+                    </div> -->
+                    <div>
                       <v-row>
                         <v-col cols="12" md="6" xl="6" lg="6">
                           <div class="file-input" :hidden="hidden" multiple>
@@ -84,13 +84,14 @@
                         <v-col cols="12" md="6" xl="6" lg="6">
                           <!-- <v-col cols="12" sm="6" offset-sm="3"> -->
                           <v-card>
-                            <v-container fluid>
-                              <v-row>
+                            <!-- <v-container fluid> -->
+                            <v-row>
+                              <v-col>
                                 <v-col
                                   v-for="image in images"
                                   :key="image.id"
                                   class="d-flex child-flex"
-                                  cols="2"
+                                  cols="4"
                                 >
                                   <v-card flat tile class="d-flex">
                                     <v-img
@@ -113,8 +114,38 @@
                                     </v-img>
                                   </v-card>
                                 </v-col>
-                              </v-row>
-                            </v-container>
+                              </v-col>
+                              <v-col>
+                                <v-col
+                                  v-for="plastic in plastics"
+                                  :key="plastic.id"
+                                  class="d-flex child-flex"
+                                  cols="4"
+                                >
+                                  <v-card flat tile class="d-flex">
+                                    <v-img
+                                      :src="plastic.src"
+                                      aspect-ratio="1"
+                                      class="grey lighten-2"
+                                    >
+                                      <template v-slot:placeholder>
+                                        <v-row
+                                          class="fill-height ma-0"
+                                          align="center"
+                                          justify="center"
+                                        >
+                                          <v-progress-circular
+                                            indeterminate
+                                            color="grey lighten-5"
+                                          ></v-progress-circular>
+                                        </v-row>
+                                      </template>
+                                    </v-img>
+                                  </v-card>
+                                </v-col>
+                              </v-col>
+                            </v-row>
+                            <!-- </v-container> -->
                           </v-card>
                           <!-- </v-col> -->
                         </v-col>
@@ -245,7 +276,8 @@ export default {
         {
           id: 1,
           title: 'Favorite road trips',
-          src: '@/assets/image/metal/cans.jpeg',
+          src:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZpXr91bjklX5VNj6Axx70Eio5wBOtMqxcF5xdnsSz_UlISBE&s',
           flex: 6,
         },
         {
@@ -253,6 +285,38 @@ export default {
           title: 'Best airlines',
           src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg',
           flex: 6,
+        },
+        {
+          id: 3,
+          title: 'Favorite road trips',
+          src:
+            'https://4.imimg.com/data4/BX/AH/MY-5977518/plastic-packaging-bottles-250x250.jpg',
+          flex: 6,
+        },
+        {
+          id: 4,
+          src:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5TqF-dpYJc55ZZGLKwv4QksBChSf888sHtvvw9cpsdUeOvl8A&s',
+        },
+      ],
+      plastics: [
+        {
+          id: 1,
+          src: 'https://image-collections.imfast.io/plastic/bot.jpg',
+        },
+        {
+          id: 2,
+          src:
+            'https://image-collections.imfast.io/plastic/bungkus-detergen.jpg',
+        },
+        {
+          id: 1,
+          src: 'https://image-collections.imfast.io/plastic/plastic-bottle.jpg',
+        },
+        {
+          id: 1,
+          src:
+            'https://image-collections.imfast.io/plastic/plastic-dirigen.jpg',
         },
       ],
     }

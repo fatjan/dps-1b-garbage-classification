@@ -83,8 +83,8 @@
                         </v-col>
                         <v-col cols="12" md="6" xl="6" lg="6">
                           <!-- <v-col cols="12" sm="6" offset-sm="3"> -->
-                          <v-card>
-                            <!-- <v-container fluid> -->
+                          <!-- <v-card>
+                            <v-container fluid>
                             <v-row>
                               <v-col>
                                 <v-col
@@ -145,9 +145,140 @@
                                 </v-col>
                               </v-col>
                             </v-row>
-                            <!-- </v-container> -->
-                          </v-card>
+                            </v-container>
+                          </v-card> -->
                           <!-- </v-col> -->
+                          <template>
+                            <div>Cardboard</div>
+                            <v-row>
+                              <v-col
+                                v-for="image in images"
+                                :key="image.id"
+                                class="d-flex child-flex"
+                                cols="2"
+                              >
+                                <!-- <v-card class="d-flex" flat tile> -->
+                                <img
+                                  :src="image.src"
+                                  alt="plastic-img"
+                                  aspect-ratio="1"
+                                  class="grey lighten-2"
+                                  height="75"
+                                />
+                                <!-- </v-card> -->
+                              </v-col>
+                            </v-row>
+                            <br />
+                            <br />
+                            <div>Glass</div>
+                            <v-row>
+                              <v-col
+                                v-for="plastic in plastics"
+                                :key="plastic.id"
+                                cols="2"
+                              >
+                                <v-card class="d-flex" flat tile>
+                                  <img
+                                    :src="plastic.src"
+                                    alt="plastic-imges"
+                                    aspect-ratio="1"
+                                    class="grey lighten-2"
+                                    height="75"
+                                  />
+                                </v-card>
+                              </v-col>
+                            </v-row>
+                            <br />
+                            <br />
+                            <div>Metal</div>
+                            <v-row>
+                              <v-col
+                                v-for="plastic in plastics"
+                                :key="plastic.id"
+                                cols="2"
+                              >
+                                <v-card class="d-flex" flat tile>
+                                  <img
+                                    :src="plastic.src"
+                                    alt="plastic-imges"
+                                    aspect-ratio="1"
+                                    class="grey lighten-2"
+                                    height="75"
+                                  />
+                                </v-card>
+                              </v-col>
+                            </v-row>
+                            <br />
+                            <br />
+                            <div>Paper</div>
+                            <v-row>
+                              <v-col
+                                v-for="plastic in plastics"
+                                :key="plastic.id"
+                                cols="2"
+                              >
+                                <v-card class="d-flex" flat tile>
+                                  <img
+                                    :src="plastic.src"
+                                    alt="plastic-imges"
+                                    aspect-ratio="1"
+                                    class="grey lighten-2"
+                                    height="75"
+                                  />
+                                </v-card>
+                              </v-col>
+                            </v-row>
+                            <br />
+                            <br />
+                            <div>Plastic</div>
+                            <v-row>
+                              <v-col
+                                v-for="plastic in plastics"
+                                :key="plastic.id"
+                                cols="2"
+                              >
+                                <v-card class="d-flex" flat tile>
+                                  <img
+                                    :src="plastic.src"
+                                    alt="plastic-imges"
+                                    aspect-ratio="1"
+                                    class="grey lighten-2"
+                                    height="75"
+                                  />
+                                </v-card>
+                              </v-col>
+                            </v-row>
+                            <br />
+                            <br />
+                            <div>Trash</div>
+                            <v-row>
+                              <v-col
+                                v-for="plastic in plastics"
+                                :key="plastic.id"
+                                cols="2"
+                              >
+                                <v-card class="d-flex" flat tile>
+                                  <img
+                                    :src="plastic.src"
+                                    alt="plastic-imges"
+                                    aspect-ratio="1"
+                                    class="grey lighten-2"
+                                    height="75"
+                                  />
+                                </v-card>
+                              </v-col>
+                            </v-row>
+                            <!-- <v-row>
+                              <v-col
+                                v-for="n in 9"
+                                :key="n"
+                                class="ini-col"
+                                cols="4"
+                              >
+                                {{ n }}
+                              </v-col>
+                            </v-row> -->
+                          </template>
                         </v-col>
                       </v-row>
                     </div>
@@ -231,6 +362,10 @@
   min-height: 500px;
 }
 
+.ini-col {
+  background-color: pink;
+}
+
 input[type='file'] {
   border: 2px solid greenyellow;
   border-radius: 4px;
@@ -301,20 +436,20 @@ export default {
       ],
       plastics: [
         {
-          id: 1,
+          id: 5,
           src: 'https://image-collections.imfast.io/plastic/bot.jpg',
         },
         {
-          id: 2,
+          id: 6,
           src:
             'https://image-collections.imfast.io/plastic/bungkus-detergen.jpg',
         },
         {
-          id: 1,
+          id: 7,
           src: 'https://image-collections.imfast.io/plastic/plastic-bottle.jpg',
         },
         {
-          id: 1,
+          id: 8,
           src:
             'https://image-collections.imfast.io/plastic/plastic-dirigen.jpg',
         },

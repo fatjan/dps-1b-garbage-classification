@@ -152,15 +152,15 @@
                             <div>Cardboard</div>
                             <v-row>
                               <v-col
-                                v-for="image in images"
-                                :key="image.id"
+                                v-for="cardboard in cardboards"
+                                :key="cardboard.id"
                                 class="d-flex child-flex"
                                 cols="2"
                               >
                                 <!-- <v-card class="d-flex" flat tile> -->
                                 <img
-                                  :src="image.src"
-                                  alt="plastic-img"
+                                  :src="cardboard.src"
+                                  alt="cardboard-img"
                                   aspect-ratio="1"
                                   class="grey lighten-2"
                                   height="75"
@@ -173,19 +173,17 @@
                             <div>Glass</div>
                             <v-row>
                               <v-col
-                                v-for="plastic in plastics"
-                                :key="plastic.id"
+                                v-for="glass in glasses"
+                                :key="glass.id"
                                 cols="2"
                               >
-                                <v-card class="d-flex" flat tile>
-                                  <img
-                                    :src="plastic.src"
-                                    alt="plastic-imges"
-                                    aspect-ratio="1"
-                                    class="grey lighten-2"
-                                    height="75"
-                                  />
-                                </v-card>
+                                <img
+                                  :src="glass.src"
+                                  alt="glass-imges"
+                                  aspect-ratio="1"
+                                  class="grey lighten-2"
+                                  height="75"
+                                />
                               </v-col>
                             </v-row>
                             <br />
@@ -193,19 +191,17 @@
                             <div>Metal</div>
                             <v-row>
                               <v-col
-                                v-for="plastic in plastics"
-                                :key="plastic.id"
+                                v-for="metal in metals"
+                                :key="metal.id"
                                 cols="2"
                               >
-                                <v-card class="d-flex" flat tile>
-                                  <img
-                                    :src="plastic.src"
-                                    alt="plastic-imges"
-                                    aspect-ratio="1"
-                                    class="grey lighten-2"
-                                    height="75"
-                                  />
-                                </v-card>
+                                <img
+                                  :src="metal.src"
+                                  alt="metal-imges"
+                                  aspect-ratio="1"
+                                  class="grey lighten-2"
+                                  height="75"
+                                />
                               </v-col>
                             </v-row>
                             <br />
@@ -213,19 +209,17 @@
                             <div>Paper</div>
                             <v-row>
                               <v-col
-                                v-for="plastic in plastics"
-                                :key="plastic.id"
+                                v-for="paper in papers"
+                                :key="paper.id"
                                 cols="2"
                               >
-                                <v-card class="d-flex" flat tile>
-                                  <img
-                                    :src="plastic.src"
-                                    alt="plastic-imges"
-                                    aspect-ratio="1"
-                                    class="grey lighten-2"
-                                    height="75"
-                                  />
-                                </v-card>
+                                <img
+                                  :src="paper.src"
+                                  alt="paper-imges"
+                                  aspect-ratio="1"
+                                  class="grey lighten-2"
+                                  height="75"
+                                />
                               </v-col>
                             </v-row>
                             <br />
@@ -237,15 +231,13 @@
                                 :key="plastic.id"
                                 cols="2"
                               >
-                                <v-card class="d-flex" flat tile>
-                                  <img
-                                    :src="plastic.src"
-                                    alt="plastic-imges"
-                                    aspect-ratio="1"
-                                    class="grey lighten-2"
-                                    height="75"
-                                  />
-                                </v-card>
+                                <img
+                                  :src="plastic.src"
+                                  alt="plastic-imges"
+                                  aspect-ratio="1"
+                                  class="grey lighten-2"
+                                  height="75"
+                                />
                               </v-col>
                             </v-row>
                             <br />
@@ -253,19 +245,17 @@
                             <div>Trash</div>
                             <v-row>
                               <v-col
-                                v-for="plastic in plastics"
-                                :key="plastic.id"
+                                v-for="trash in trashes"
+                                :key="trash.id"
                                 cols="2"
                               >
-                                <v-card class="d-flex" flat tile>
-                                  <img
-                                    :src="plastic.src"
-                                    alt="plastic-imges"
-                                    aspect-ratio="1"
-                                    class="grey lighten-2"
-                                    height="75"
-                                  />
-                                </v-card>
+                                <img
+                                  :src="trash.src"
+                                  alt="trash-imges"
+                                  aspect-ratio="1"
+                                  class="grey lighten-2"
+                                  height="75"
+                                />
                               </v-col>
                             </v-row>
                             <!-- <v-row>
@@ -407,7 +397,7 @@ export default {
       // isLoading is true when the model is being loaded into the page
       isLoading: true,
       isImageLoading: false,
-      images: [
+      cardboards: [
         {
           id: 1,
           title: 'Favorite road trips',
@@ -434,6 +424,51 @@ export default {
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5TqF-dpYJc55ZZGLKwv4QksBChSf888sHtvvw9cpsdUeOvl8A&s',
         },
       ],
+      glasses: [
+        {
+          id: 5,
+          src: 'https://image-collections.imfast.io/plastic/bot.jpg',
+        },
+        {
+          id: 6,
+          src:
+            'https://image-collections.imfast.io/plastic/bungkus-detergen.jpg',
+        },
+        {
+          id: 7,
+          src: 'https://image-collections.imfast.io/plastic/plastic-bottle.jpg',
+        },
+      ],
+      metals: [
+        {
+          id: 5,
+          src: 'https://image-collections.imfast.io/plastic/bot.jpg',
+        },
+        {
+          id: 6,
+          src:
+            'https://image-collections.imfast.io/plastic/bungkus-detergen.jpg',
+        },
+        {
+          id: 7,
+          src: 'https://image-collections.imfast.io/plastic/plastic-bottle.jpg',
+        },
+      ],
+      papers: [
+        {
+          id: 5,
+          src: 'https://image-collections.imfast.io/plastic/bot.jpg',
+        },
+        {
+          id: 6,
+          src:
+            'https://image-collections.imfast.io/plastic/bungkus-detergen.jpg',
+        },
+        {
+          id: 7,
+          src: 'https://image-collections.imfast.io/plastic/plastic-bottle.jpg',
+        },
+      ],
       plastics: [
         {
           id: 5,
@@ -448,10 +483,20 @@ export default {
           id: 7,
           src: 'https://image-collections.imfast.io/plastic/plastic-bottle.jpg',
         },
+      ],
+      trashes: [
         {
-          id: 8,
+          id: 5,
+          src: 'https://image-collections.imfast.io/plastic/bot.jpg',
+        },
+        {
+          id: 6,
           src:
-            'https://image-collections.imfast.io/plastic/plastic-dirigen.jpg',
+            'https://image-collections.imfast.io/plastic/bungkus-detergen.jpg',
+        },
+        {
+          id: 7,
+          src: 'https://image-collections.imfast.io/plastic/plastic-bottle.jpg',
         },
       ],
     }
@@ -530,11 +575,37 @@ export default {
         // find the maximum number from different classes to see, which classification the garbage is
         const maxPoint = Math.max(...classes)
         const index = classes.indexOf(maxPoint)
+        this.pushInToCompartments(index)
         const predictedClass = this.targetClasses[index]
         this.isImageLoading = false
         // the resulting image classification
         this.garbageClassification = predictedClass + '.'
       })
+    },
+    pushInToCompartments(garbageType) {
+      const item = {
+        id: 10,
+        src: this.imageGarbage,
+      }
+      switch (garbageType) {
+        case 0:
+          this.cardboards.push(item)
+          break
+        case 1:
+          this.glasses.push(item)
+          break
+        case 2:
+          this.metals.push(item)
+          break
+        case 3:
+          this.papers.push(item)
+          break
+        case 4:
+          this.plastics.push(item)
+          break
+        default:
+          this.trashes.push(item)
+      }
     },
   },
 }
